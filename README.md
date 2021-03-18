@@ -33,7 +33,6 @@
     NAME                 READY   STATUS    RESTARTS   AGE
     pod-multiple-nginx   2/2     Running   0          5s
 
-
 3. Create busybox with an echo date and sleep 
    - `k run pod-busybox --image=busybox --dry-run=client -o yaml -- /bin/sh -c 'while true;do echo $(date); sleep 10; done;' > pod-busybox.yaml`
    - `k apply -f pod-busybox.yaml`
@@ -51,3 +50,7 @@
         cpu: "300m"`
     - Verify `k get pod pod-with-limits`
   
+5. Deployment with 3 replicas
+   - Create yaml file `k create deployment webapp --image=nginx --replicas=3 -o yaml --dry-run=client > webapp.yaml`
+   - `k apply -f webapp.yaml`
+   - Verify `k get deployments.apps webapp`
