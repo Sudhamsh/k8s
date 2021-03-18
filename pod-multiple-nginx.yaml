@@ -10,7 +10,7 @@ spec:
   - image: nginx
     name: container1
     resources: {}
-  - image: nginx
+  - image: tomcat
     name: container2
   dnsPolicy: ClusterFirst
   restartPolicy: Always
