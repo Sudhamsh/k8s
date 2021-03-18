@@ -54,3 +54,9 @@
    - Create yaml file `k create deployment webapp --image=nginx --replicas=3 -o yaml --dry-run=client > webapp.yaml`
    - `k apply -f webapp.yaml`
    - Verify `k get deployments.apps webapp`
+6. Create service for above deployment
+   - `k create service clusterip webapp-srv --tcp=8080:80 --dry-run=client -o yaml > webapp-srv.yaml`
+   - Edit webapp-srv.yaml file to add Pod.spec.selector, this will slected the pods from above deployment `app: webapp`
+   - `k apply -f webapp-srv.yaml `
+   - Verify, you should see 3 endpoints with Ips and port in the o/p `k get endpoints webapp-srv `
+   
