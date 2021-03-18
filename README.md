@@ -32,3 +32,22 @@
     `k get pods`
     NAME                 READY   STATUS    RESTARTS   AGE
     pod-multiple-nginx   2/2     Running   0          5s
+
+
+3. Create busybox with an echo date and sleep 
+   - `k run pod-busybox --image=busybox --dry-run=client -o yaml -- /bin/sh -c 'while true;do echo $(date); sleep 10; done;' > pod-busybox.yaml`
+   - `k apply -f pod-busybox.yaml`
+   - Verify `k logs pod-busybox`
+
+4. Create nginx with resource requests and limits
+   - `k run pod-with-limits --image=nginx --dry-run=client -o yaml > pod-with-limits.yaml`
+   - Edit to add limits
+   `resources:
+      requests:
+        memory: "50Mi"
+        cpu: "250m" 
+      limits:
+        memory: "75Mi"
+        cpu: "300m"`
+    - Verify `k get pod pod-with-limits`
+  
