@@ -68,3 +68,15 @@
         name: config-map`
    - Check pod env `k exec pod-with-configmap -it -- env`
       O/P should contain `env=dev`
+ 8. Create secret and add it as env to a pod
+    - Create a secret `k create secret generic db-credentials --from-literal=username=d0ntAskM3 --dry-run=client -o yaml > db-credentials.yaml`
+    - `k apply -f db-credentials.yaml`
+    - Create pod `k run pod-with-secret --image=nginx --dry-run=client -o yaml > pod-with-secret.yaml`
+    - Edit and add secret to env
+      `envFrom:
+       - secretRef:
+         name: db-credentials`
+    - `k apply -f pod-with-secret.yaml`
+    - Validate `k exec pod-with-secret -it -- env`
+      O/P should contain `username=d0ntAskM3`
+    
