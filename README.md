@@ -59,4 +59,12 @@
    - Edit webapp-srv.yaml file to add Pod.spec.selector, this will slected the pods from above deployment `app: webapp`
    - `k apply -f webapp-srv.yaml `
    - Verify, you should see 3 endpoints with Ips and port in the o/p `k get endpoints webapp-srv `
-   
+7. Create config map and add it as env to a pod
+   - `k create configmap config-map --from-literal=env=dev`
+   - Create a nginx pod k run pod-with-configmap --image=nginx --dry-run=client -o yaml > pod-with-configmap.yaml
+   - Edit pod yaml file and add configmap as an env
+     ` envFrom:
+    - configMapRef:
+        name: config-map`
+   - Check pod env `k exec pod-with-configmap -it -- env`
+      O/P should contain `env=dev`
