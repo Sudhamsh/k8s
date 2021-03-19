@@ -72,11 +72,28 @@
     - Create a secret `k create secret generic db-credentials --from-literal=username=d0ntAskM3 --dry-run=client -o yaml > db-credentials.yaml`
     - `k apply -f db-credentials.yaml`
     - Create pod `k run pod-with-secret --image=nginx --dry-run=client -o yaml > pod-with-secret.yaml`
-    - Edit and add secret to env
+    - Edit and add secret to env 
+    - 
       `envFrom:
        - secretRef:
          name: db-credentials`
     - `k apply -f pod-with-secret.yaml`
     - Validate `k exec pod-with-secret -it -- env`
       O/P should contain `username=d0ntAskM3`
+ 9. Create secret and mount it as a volume in a pod
+    - Create a secret file `echo username=d0nTAskM3 > credentials.txt`
+    - k create secret generic secret-file --from-file=credentials.txt
+    - Create pod `k run pod-secret-volume --image=nginx --dry-run=client -o yaml > pod-secret-volume.yaml`
+    - Edit pod yaml file to add volume and volumeMounts
+      `volumeMounts:
+    - name: secret-file
+      mountPath: "/etc/secret"
+      readOnly: true
+      volumes:
+      - name: secret-file
+        secret:
+          secretName: secret-file`
+     - Create pod `k apply -f pod-secret-volume.yaml`
+     - Verify `k exec pod-secret-volume -- ls /etc/secret`
+       O/P credentials.txt
     
