@@ -96,4 +96,15 @@
      - Create pod `k apply -f pod-secret-volume.yaml`
      - Verify `k exec pod-secret-volume -- ls /etc/secret`
        O/P credentials.txt
+  10. Create emptydir volume for pod
+      - `k run pod-emptydir --image=nginx --dry-run=client -o yaml > pod-emptydir.yaml`
+      - Edit pod-emptydir.yaml to add volume and volume mount
+        `volumes:
+         - name: logs-vol
+           emptyDir: {}`
+           volumeMounts: # is defined for a container
+           - name: logs-vol
+             mountPath: /var/logs`
+      - Create pod `k apply -f pod-emptydir.yaml`
+      - Verify `k exec pod-emptydir -- ls /var/logs`
     
