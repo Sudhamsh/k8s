@@ -1,0 +1,14 @@
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: test-network-policy
+  namespace: mynamespace
+spec:
+  podSelector:
+    matchLabels:
+      app: foo
+  ingress:
+  - from:
+    - podSelector:
+        matchLabels:
+          access: granted
